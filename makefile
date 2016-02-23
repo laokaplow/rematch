@@ -21,11 +21,12 @@ INCLUDE_DIRS = src vendor
 OUTPUT_DIRS = build bin
 
 ## rules
-.PHONY: all clean
+.PHONY: all clean program
 
-all: $(TARGET)
+all: program
+program: $(TARGET)
 
-$(TARGET): build/src/main.o
+$(TARGET): $(addprefix  build/src/, main.o pattern.o)
 	@mkdir -p $(@D) # ensure output directory exists
 	$(COMPILE) $^ -o $@
 
