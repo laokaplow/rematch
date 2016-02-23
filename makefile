@@ -29,7 +29,7 @@ $(TARGET): build/src/main.o
 	@mkdir -p $(@D) # ensure output directory exists
 	$(COMPILE) $^ -o $@
 
-# place object and dependency files in their own directory
+# build object and dependency files
 build/%.o : %.cpp
 	@mkdir -p $(@D) # ensure output directory exists
 	@echo building $@ from "<" $^ ">"

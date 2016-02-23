@@ -1,10 +1,10 @@
 TEST_RUNNER = bin/run_tests
 
-$(OUTPUT_DIRS) += build/test
-
 SRCS += $(wildcard test/*.cpp)
 
 .PHONY: test tests
+
+all: $(TEST_RUNNER)
 
 # build the tests
 tests: $(TEST_RUNNER)
