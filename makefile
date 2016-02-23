@@ -1,8 +1,7 @@
 ## make settings
 .DEFAULT_GOAL = all
-.PHONY = all clean test
-.SUFFIXES = # disables most default rules
-
+.SUFFIXES: # disables most default rules
+.SECONDEXPANSION: # allow prereqs to reference targets
 
 ## compilation settings
 
@@ -14,36 +13,33 @@ COMPILE = $(CXX) $(CXXFLAGS) $(DEPFLAGS)
 
 ## project structure
 
-TARGET = bin/re
+TARGET = bin/rematch
 
 SRCS := $(wildcard src/*.cpp)
-OBJ_FILES = $(SRCS:src/%.cpp=build/%.o)
-DEP_FILES = $(SRCS:src/%.cpp=build/%.d)
 
 INCLUDE_DIRS = src vendor
 OUTPUT_DIRS = build bin
-$(OUTPUT_DIRS):
-	mkdir -p $@
-
 
 ## rules
+.PHONY: all clean
 
 all: $(TARGET)
 
-$(TARGET): build/main.o | bin
+$(TARGET): build/src/main.o
+	@mkdir -p $(@D) # ensure output directory exists
 	$(COMPILE) $^ -o $@
 
 # place object and dependency files in their own directory
-$(OBJ_FILES): $(SRCS:build/%.o=src/%.cpp) | build
-	@echo building $@ from $<
+build/%.o : %.cpp
+	@mkdir -p $(@D) # ensure output directory exists
+	@echo building $@ from "<" $^ ">"
 	$(COMPILE) $< -c -o $@
 
-# tests
-#include tests/subdir.mk
-
+# # tests
+# include test/subdir.mk
 
 clean:
 	rm -rf $(OUTPUT_DIRS)
 
 #include dependency information
--include $(DEP_FILES:%.c=%.d)
+-include $(SRCS:%.cpp=build/%.d)
