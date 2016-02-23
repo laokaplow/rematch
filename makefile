@@ -35,8 +35,8 @@ build/%.o : %.cpp
 	@echo building $@ from "<" $^ ">"
 	$(COMPILE) $< -c -o $@
 
-# # tests
-# include test/subdir.mk
+# tests
+include test/subdir.mk
 
 clean:
 	rm -rf $(OUTPUT_DIRS)
